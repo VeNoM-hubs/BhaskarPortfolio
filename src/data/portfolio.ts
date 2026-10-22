@@ -158,22 +158,6 @@ export const projects: Project[] = [
     tags: ['ESP32', 'MQTT', 'Wazuh', 'Sysmon'],
     links: [],
   },
-  {
-    id: 'aaruush',
-    code: 'P-06',
-    title: 'Aaruush Creatives',
-    label: 'Creative team',
-    place: 'Committee head, Aaruush',
-    when: 'Volunteer',
-    summary: 'A twenty-person creative team, from event coverage to the finished picture.',
-    matters: 'Creative work ships when a team can share a direction.',
-    points: [
-      'Led a 20-member team across event coverage, photography, videography, editing, and VFX.',
-      'Kept the group aligned on what the coverage needed to look like, then shipped the edits.',
-    ],
-    tags: ['Direction', 'Photography', 'Video', 'VFX'],
-    links: [],
-  },
 ]
 
 export const practiceGroups = [
@@ -257,11 +241,12 @@ const CONTACT_W = 440
 const CONTACT_H = 236
 const DETAIL_W = 640
 const DETAIL_H = 360
-const PROJECT_W = 420
-const PROJECT_H = 300
-
-const projectOriginX = 1360
-const projectOriginY = -40
+const PROJECT_W = 340
+const PROJECT_H = 250
+const GRID_X = 1120
+const GRID_Y = 0
+const GRID_GAP_X = 64
+const GRID_GAP_Y = 48
 
 export const boxes: Record<string, Box> = {
   intro: { x: 0, y: 0, width: INTRO_W, height: INTRO_H },
@@ -274,17 +259,26 @@ export const boxes: Record<string, Box> = {
   practice: { x: 0, y: INTRO_H + 240, width: INTRO_W, height: 400 },
   note: { x: INTRO_W + 36, y: -250, width: 220, height: 78 },
   process: { x: -470, y: -10, width: 320, height: 430 },
-  work: { x: 660, y: 10, width: 340, height: 430 },
+  work: { x: 700, y: 24, width: 330, height: 390 },
   'step-1': { x: -80, y: 1120, width: DETAIL_W, height: DETAIL_H },
   'step-2': { x: -80, y: 1640, width: DETAIL_W, height: DETAIL_H },
   'step-3': { x: -80, y: 2160, width: DETAIL_W, height: DETAIL_H },
   'step-4': { x: -80, y: 2680, width: DETAIL_W, height: DETAIL_H },
-  neuralyzer: { x: projectOriginX, y: projectOriginY, width: PROJECT_W, height: PROJECT_H },
-  clinical: { x: projectOriginX + 500, y: projectOriginY, width: PROJECT_W, height: PROJECT_H },
-  guardrails: { x: projectOriginX + 250, y: projectOriginY + 380, width: PROJECT_W, height: PROJECT_H },
-  emotion: { x: projectOriginX - 220, y: projectOriginY + 180, width: PROJECT_W, height: PROJECT_H },
-  godseye: { x: projectOriginX + 760, y: projectOriginY + 200, width: PROJECT_W, height: PROJECT_H },
-  aaruush: { x: projectOriginX + 250, y: projectOriginY + 760, width: PROJECT_W, height: PROJECT_H },
+  neuralyzer: { x: GRID_X, y: GRID_Y, width: PROJECT_W, height: PROJECT_H },
+  clinical: { x: GRID_X + PROJECT_W + GRID_GAP_X, y: GRID_Y, width: PROJECT_W, height: PROJECT_H },
+  emotion: { x: GRID_X, y: GRID_Y + PROJECT_H + GRID_GAP_Y, width: PROJECT_W, height: PROJECT_H },
+  guardrails: {
+    x: GRID_X + PROJECT_W + GRID_GAP_X,
+    y: GRID_Y + PROJECT_H + GRID_GAP_Y,
+    width: PROJECT_W,
+    height: PROJECT_H,
+  },
+  godseye: {
+    x: GRID_X + (PROJECT_W + GRID_GAP_X) / 2,
+    y: GRID_Y + (PROJECT_H + GRID_GAP_Y) * 2,
+    width: PROJECT_W,
+    height: PROJECT_H,
+  },
 }
 
 export function projectById(id: string) {

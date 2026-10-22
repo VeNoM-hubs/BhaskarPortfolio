@@ -99,7 +99,7 @@ export function WorkNode() {
         <span className="copper-dot" />
         Selected work
       </p>
-      <h2>Six things I shipped.</h2>
+      <h2>Five things I shipped.</h2>
       <ol>
         {projects.map((project) => (
           <li key={project.id}>
@@ -135,6 +135,9 @@ export function ProjectNode({ data }: NodeProps<ProjectFlowNode>) {
       }}
     >
       <GhostHandle type="target" position={Position.Left} id="in" />
+      <GhostHandle type="target" position={Position.Top} id="top" />
+      <GhostHandle type="source" position={Position.Right} id="out" />
+      <GhostHandle type="source" position={Position.Bottom} id="down" />
       <p className="kicker">
         <span className="code">{project.code}</span>
         {project.label}

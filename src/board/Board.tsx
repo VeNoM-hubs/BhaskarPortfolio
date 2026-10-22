@@ -47,7 +47,7 @@ function viewOptions(ids: string[], home = false): FitViewOptions {
   return {
     nodes: ids.map((id) => ({ id })),
     duration: prefersReducedMotion() ? 0 : 700,
-    padding: home ? 0.22 : group ? 0.28 : 0.35,
+    padding: home ? 0.22 : group ? 0.1 : 0.32,
     maxZoom: home ? 1.12 : group ? 0.9 : 1.2,
     minZoom: home ? 0.9 : 0.45,
   }

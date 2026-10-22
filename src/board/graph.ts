@@ -106,17 +106,24 @@ export function buildEdges(): Edge<RouteEdgeData>[] {
       type: 'route',
       data: { label: '', focusIds: ['step-1'], guideIndex: guideIndex('step-1') },
     },
-    ...projects.map((project) => ({
-      id: `link-work-${project.id}`,
-      source: 'work',
-      target: project.id,
-      sourceHandle: 'out',
-      targetHandle: 'in',
+    ...[
+      ['work', 'neuralyzer', 'out', 'in'],
+      ['work', 'emotion', 'out', 'in'],
+      ['neuralyzer', 'clinical', 'out', 'in'],
+      ['emotion', 'guardrails', 'out', 'in'],
+      ['emotion', 'godseye', 'down', 'top'],
+      ['guardrails', 'godseye', 'down', 'top'],
+    ].map(([source, target, sourceHandle, targetHandle]) => ({
+      id: `link-${source}-${target}`,
+      source,
+      target,
+      sourceHandle,
+      targetHandle,
       type: 'route' as const,
       data: {
         label: '',
-        focusIds: [project.id],
-        guideIndex: guideIndex(project.id),
+        focusIds: [target],
+        guideIndex: guideIndex(target),
       },
     })),
   ]
