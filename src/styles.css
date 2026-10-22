@@ -54,6 +54,7 @@ a { color: var(--copper-deep); }
 .react-flow__node-project .card,
 .react-flow__node-process .card,
 .react-flow__node-work .card,
+.react-flow__node-practice .card,
 .card-intro .explore-button,
 .card-contact a,
 .route-pill { pointer-events: auto; }
@@ -209,7 +210,7 @@ a { color: var(--copper-deep); }
   color: var(--soft);
 }
 
-.card-process ol, .card-work ol {
+.card-process ol, .card-work ol, .card-practice ol {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -218,7 +219,7 @@ a { color: var(--copper-deep); }
   gap: 8px;
 }
 
-.card-process button, .card-work button {
+.card-process button, .card-work button, .card-practice button {
   width: 100%;
   display: flex;
   gap: 12px;
@@ -234,7 +235,8 @@ a { color: var(--copper-deep); }
 .card-process button span { color: var(--copper); font-family: var(--serif); }
 
 .card-process button strong,
-.card-work .row-label { flex: 1; min-width: 0; }
+.card-work .row-label,
+.card-practice .row-label { flex: 1; min-width: 0; }
 
 .row-arrow {
   flex: none;
@@ -247,7 +249,8 @@ a { color: var(--copper-deep); }
 .row-arrow::before { content: "→"; }
 
 .card-process button:hover .row-arrow,
-.card-work button:hover .row-arrow {
+.card-work button:hover .row-arrow,
+.card-practice button:hover .row-arrow {
   color: var(--copper);
   transform: translateX(3px);
 }
@@ -378,7 +381,11 @@ a { color: var(--copper-deep); }
   padding: 4px 8px;
 }
 
-.card-contact h2, .card-practice h2 { font-size: 34px; line-height: 1; margin: 10px 0 12px; }
+.card-contact h2, .card-practice h2 { font-size: 32px; line-height: 1; margin: 10px 0 12px; }
+
+.card-practice-detail h2, .card-practice-detail .kicker { margin-bottom: 12px; }
+
+.card-practice-detail .tags { margin-top: 8px; }
 
 .mail {
   display: inline-block;

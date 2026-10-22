@@ -12,7 +12,7 @@ import {
 import { guide } from '../data/portfolio'
 import { BoardActionsContext, type BoardActions } from './actions'
 import { buildEdges, buildNodes } from './graph'
-import { ContactNode, IntroNode, NoteNode, PracticeNode, ProcessNode, ProjectNode, StepNode, WorkNode } from './nodes'
+import { ContactNode, IntroNode, NoteNode, PracticeCardNode, PracticeNode, ProcessNode, ProjectNode, StepNode, WorkNode } from './nodes'
 import { Cursor } from './Cursor'
 import { RouteEdge } from './RouteEdge'
 
@@ -22,6 +22,7 @@ const nodeTypes = {
   project: ProjectNode,
   contact: ContactNode,
   practice: PracticeNode,
+  practiceCard: PracticeCardNode,
   process: ProcessNode,
   work: WorkNode,
   note: NoteNode,
@@ -47,9 +48,9 @@ function viewOptions(ids: string[], home = false): FitViewOptions {
   return {
     nodes: ids.map((id) => ({ id })),
     duration: prefersReducedMotion() ? 0 : 700,
-    padding: home ? 0.22 : group ? 0.1 : 0.32,
-    maxZoom: home ? 1.12 : group ? 0.9 : 1.2,
-    minZoom: home ? 0.9 : 0.45,
+    padding: home ? 0.22 : group ? 0.16 : 0.28,
+    maxZoom: home ? 1.12 : group ? 0.85 : 1.15,
+    minZoom: home ? 0.9 : 0.2,
   }
 }
 
@@ -154,7 +155,7 @@ function BoardCanvas({ openId, onOpen, tourSignal, homeSignal }: BoardProps) {
         onInit={(instance) => {
           void instance.fitView({ ...viewOptions(['intro'], true), duration: 0 })
         }}
-        minZoom={0.28}
+        minZoom={0.18}
         maxZoom={1.45}
         nodesDraggable={false}
         nodesConnectable={false}

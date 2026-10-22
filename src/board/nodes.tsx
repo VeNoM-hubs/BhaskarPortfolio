@@ -1,9 +1,9 @@
-import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import type { ProjectFlowNode, StepFlowNode } from './graph'
 import {
   certificates,
   guideIndex,
-  practiceGroups,
+  practiceCards,
   processSteps,
   profile,
   projectById,
@@ -95,6 +95,7 @@ export function WorkNode() {
     <article className="card card-work" data-cursor="View work">
       <GhostHandle type="target" position={Position.Left} id="in" />
       <GhostHandle type="source" position={Position.Right} id="out" />
+      <GhostHandle type="source" position={Position.Bottom} id="down" />
       <p className="kicker">
         <span className="copper-dot" />
         Selected work
@@ -179,34 +180,58 @@ export function ContactNode() {
 }
 
 export function PracticeNode() {
+  const { enter } = useBoardActions()
   return (
-    <article className="card card-practice">
+    <article className="card card-practice" data-cursor="View">
       <GhostHandle type="target" position={Position.Top} id="in" />
+      <GhostHandle type="source" position={Position.Bottom} id="down" />
       <p className="kicker">
         <span className="copper-dot" />
         Practice
       </p>
       <h2>Tools I will actually hand over.</h2>
-      <div className="practice-grid">
-        {practiceGroups.map((group) => (
-          <section key={group.label} className="practice-group">
-            <h3>{group.label}</h3>
-            <ul className="tags">
-              {group.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </section>
+      <ol>
+        {practiceCards.map((card) => (
+          <li key={card.id}>
+            <button type="button" className="nodrag nopan" onClick={() => enter(guideIndex(card.id))}>
+              <span className="row-label">{card.title}</span>
+              <i className="row-arrow" aria-hidden="true" />
+            </button>
+          </li>
         ))}
-      </div>
-      <ul className="cert-lines">
-        {certificates.map((certificate) => (
-          <li key={certificate}>{certificate}</li>
-        ))}
-      </ul>
-      <p className="teaching">
-        <strong>{teaching.title}.</strong> {teaching.body}
-      </p>
+      </ol>
+    </article>
+  )
+}
+
+export function PracticeCardNode({ data }: NodeProps<Node<{ cardId: string }, 'practiceCard'>>) {
+  const card = practiceCards.find((item) => item.id === data.cardId)
+  if (!card) return null
+  const study = card.id === 'practice-study'
+
+  return (
+    <article className="card card-practice-detail">
+      <GhostHandle type="target" position={Position.Top} id="top" />
+      <GhostHandle type="source" position={Position.Bottom} id="down" />
+      <p className="kicker">{card.title}</p>
+      {study ? (
+        <>
+          <ul className="cert-lines">
+            {certificates.map((certificate) => (
+              <li key={certificate}>{certificate}</li>
+            ))}
+          </ul>
+          <p className="teaching">
+            <strong>{teaching.title}.</strong> {teaching.body}
+          </p>
+        </>
+      ) : (
+        <ul className="tags">
+          {card.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      )}
     </article>
   )
 }

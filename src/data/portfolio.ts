@@ -166,6 +166,19 @@ export const practiceGroups = [
   { label: 'Workflows', items: ['Prompt checks', 'RAG', 'Deployment'] },
 ]
 
+export const practiceCards = [
+  ...practiceGroups.map((group) => ({
+    id: `practice-${group.label.toLowerCase()}`,
+    title: group.label,
+    items: group.items,
+  })),
+  {
+    id: 'practice-study',
+    title: 'Study',
+    items: [] as string[],
+  },
+]
+
 export const certificates = [
   'GitHub Copilot Certification',
   'Oracle Cloud Infrastructure 2025 Certified Foundations Associate',
@@ -197,7 +210,7 @@ export const guide: GuideStop[] = [
     id: 'process',
     label: 'How I work',
     nextLabel: 'Name the friction',
-    focusIds: ['process'],
+    focusIds: processSteps.map((step) => step.id),
     parentId: null,
   },
   ...processSteps.map((step, index) => ({
@@ -210,15 +223,22 @@ export const guide: GuideStop[] = [
   {
     id: 'practice',
     label: 'Practice',
-    nextLabel: 'Selected work',
-    focusIds: ['practice'],
+    nextLabel: practiceCards[0]?.title ?? 'Selected work',
+    focusIds: practiceCards.map((card) => card.id),
     parentId: null,
   },
+  ...practiceCards.map((card, index) => ({
+    id: card.id,
+    label: card.title,
+    nextLabel: practiceCards[index + 1]?.title ?? 'Selected work',
+    focusIds: [card.id],
+    parentId: 'practice',
+  })),
   {
     id: 'work',
     label: 'Selected work',
     nextLabel: projects[0]?.title ?? 'Contact',
-    focusIds: ['work', ...projects.map((project) => project.id)],
+    focusIds: projects.map((project) => project.id),
     parentId: null,
   },
   ...projectStops,
@@ -241,12 +261,9 @@ const CONTACT_W = 440
 const CONTACT_H = 236
 const DETAIL_W = 640
 const DETAIL_H = 360
-const PROJECT_W = 340
-const PROJECT_H = 250
-const GRID_X = 1120
-const GRID_Y = 0
-const GRID_GAP_X = 64
-const GRID_GAP_Y = 48
+const PROJECT_W = 420
+const PROJECT_H = 270
+const COLUMN_GAP = 52
 
 export const boxes: Record<string, Box> = {
   intro: { x: 0, y: 0, width: INTRO_W, height: INTRO_H },
@@ -256,29 +273,23 @@ export const boxes: Record<string, Box> = {
     width: CONTACT_W,
     height: CONTACT_H,
   },
-  practice: { x: 0, y: INTRO_H + 240, width: INTRO_W, height: 400 },
+  practice: { x: 60, y: INTRO_H + 220, width: 420, height: 340 },
   note: { x: INTRO_W + 36, y: -250, width: 220, height: 78 },
   process: { x: -470, y: -10, width: 320, height: 430 },
-  work: { x: 700, y: 24, width: 330, height: 390 },
-  'step-1': { x: -80, y: 1120, width: DETAIL_W, height: DETAIL_H },
-  'step-2': { x: -80, y: 1640, width: DETAIL_W, height: DETAIL_H },
-  'step-3': { x: -80, y: 2160, width: DETAIL_W, height: DETAIL_H },
-  'step-4': { x: -80, y: 2680, width: DETAIL_W, height: DETAIL_H },
-  neuralyzer: { x: GRID_X, y: GRID_Y, width: PROJECT_W, height: PROJECT_H },
-  clinical: { x: GRID_X + PROJECT_W + GRID_GAP_X, y: GRID_Y, width: PROJECT_W, height: PROJECT_H },
-  emotion: { x: GRID_X, y: GRID_Y + PROJECT_H + GRID_GAP_Y, width: PROJECT_W, height: PROJECT_H },
-  guardrails: {
-    x: GRID_X + PROJECT_W + GRID_GAP_X,
-    y: GRID_Y + PROJECT_H + GRID_GAP_Y,
-    width: PROJECT_W,
-    height: PROJECT_H,
-  },
-  godseye: {
-    x: GRID_X + (PROJECT_W + GRID_GAP_X) / 2,
-    y: GRID_Y + (PROJECT_H + GRID_GAP_Y) * 2,
-    width: PROJECT_W,
-    height: PROJECT_H,
-  },
+  work: { x: 720, y: 16, width: 340, height: 390 },
+  'step-1': { x: -2800, y: 0, width: DETAIL_W, height: DETAIL_H },
+  'step-2': { x: -2800, y: DETAIL_H + COLUMN_GAP, width: DETAIL_W, height: DETAIL_H },
+  'step-3': { x: -2800, y: (DETAIL_H + COLUMN_GAP) * 2, width: DETAIL_W, height: DETAIL_H },
+  'step-4': { x: -2800, y: (DETAIL_H + COLUMN_GAP) * 3, width: DETAIL_W, height: DETAIL_H },
+  neuralyzer: { x: 720, y: 1100, width: PROJECT_W, height: PROJECT_H },
+  clinical: { x: 720, y: 1100 + PROJECT_H + COLUMN_GAP, width: PROJECT_W, height: PROJECT_H },
+  guardrails: { x: 720, y: 1100 + (PROJECT_H + COLUMN_GAP) * 2, width: PROJECT_W, height: PROJECT_H },
+  emotion: { x: 720, y: 1100 + (PROJECT_H + COLUMN_GAP) * 3, width: PROJECT_W, height: PROJECT_H },
+  godseye: { x: 720, y: 1100 + (PROJECT_H + COLUMN_GAP) * 4, width: PROJECT_W, height: PROJECT_H },
+  'practice-languages': { x: 3600, y: 0, width: 520, height: 240 },
+  'practice-tools': { x: 3600, y: 292, width: 520, height: 240 },
+  'practice-workflows': { x: 3600, y: 584, width: 520, height: 240 },
+  'practice-study': { x: 3600, y: 876, width: 520, height: 300 },
 }
 
 export function projectById(id: string) {

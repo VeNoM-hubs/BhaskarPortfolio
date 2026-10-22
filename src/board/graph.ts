@@ -1,5 +1,5 @@
 import type { Edge, Node } from '@xyflow/react'
-import { boxes, guideIndex, processSteps, projects } from '../data/portfolio'
+import { boxes, guideIndex, practiceCards, processSteps, projects } from '../data/portfolio'
 
 export type RouteEdgeData = {
   label: string
@@ -46,6 +46,12 @@ export function buildNodes(): Node[] {
       type: 'project',
       data: { projectId: project.id, guideIndex: guideIndex(project.id) } satisfies ProjectNodeData,
       ...box(project.id),
+    })),
+    ...practiceCards.map((card) => ({
+      id: card.id,
+      type: 'practiceCard',
+      data: { cardId: card.id },
+      ...box(card.id),
     })),
   ]
 }
@@ -97,33 +103,30 @@ export function buildEdges(): Edge<RouteEdgeData>[] {
       type: 'route' as const,
       data: { label: '', focusIds: [processSteps[index + 1].id], guideIndex: guideIndex(processSteps[index + 1].id) },
     })),
-    {
-      id: 'link-process-step',
-      source: 'process',
-      target: 'step-1',
+    ...projects.slice(0, -1).map((project, index) => ({
+      id: `link-${project.id}-${projects[index + 1].id}`,
+      source: project.id,
+      target: projects[index + 1].id,
       sourceHandle: 'down',
-      targetHandle: 'in',
-      type: 'route',
-      data: { label: '', focusIds: ['step-1'], guideIndex: guideIndex('step-1') },
-    },
-    ...[
-      ['work', 'neuralyzer', 'out', 'in'],
-      ['work', 'emotion', 'out', 'in'],
-      ['neuralyzer', 'clinical', 'out', 'in'],
-      ['emotion', 'guardrails', 'out', 'in'],
-      ['emotion', 'godseye', 'down', 'top'],
-      ['guardrails', 'godseye', 'down', 'top'],
-    ].map(([source, target, sourceHandle, targetHandle]) => ({
-      id: `link-${source}-${target}`,
-      source,
-      target,
-      sourceHandle,
-      targetHandle,
+      targetHandle: 'top',
       type: 'route' as const,
       data: {
         label: '',
-        focusIds: [target],
-        guideIndex: guideIndex(target),
+        focusIds: [projects[index + 1].id],
+        guideIndex: guideIndex(projects[index + 1].id),
+      },
+    })),
+    ...practiceCards.slice(0, -1).map((card, index) => ({
+      id: `link-${card.id}-${practiceCards[index + 1].id}`,
+      source: card.id,
+      target: practiceCards[index + 1].id,
+      sourceHandle: 'down',
+      targetHandle: 'top',
+      type: 'route' as const,
+      data: {
+        label: '',
+        focusIds: [practiceCards[index + 1].id],
+        guideIndex: guideIndex(practiceCards[index + 1].id),
       },
     })),
   ]
